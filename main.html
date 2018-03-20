@@ -1,115 +1,103 @@
 <!DOCTYPE html>
 <html>
-    <meta charset = "utf-8">
-    <head>
-        <title>13050009 HealthCare</title>
+  <meta charset="utf-8">
+  <head>
+    <title>13050009 HealthCare</title>
+    <style type="text/css">
+      body {
+        margin:0;
+        padding:0;
+        margin-top:0px;
+        padding-top : 0px ;
+      }
+      .top {
+        background-color : #A4DDF5;
+        text-align : center;
+        color :black;
+        font-size : 18px;
+      }
+      div.id , div.pw {
+        float : left;
+      }
+      div.id label, div.pw label{
+        float:left;
+        padding-left:1rem;
+        font-size:1.3em;
+        color:#fff;
+        margin-right:5px
+      }
+      div.id input ,div.pw input{
+        float : left;
+        padding-left: 2rem;
+        font-size : 1rem;
+        color : #454545;
+        margin-right : 5px;
+      }
+      #topic {
+        font-size : 1.5rem;
+        color : #fff;
+        float : left;
+        display: inline;
+        margin-left : 20px ;
+      }
+      header {
+        clear : both;
+        float : left;
+        width : 100%;
+        background-color :#454545;
+      }
+      #login-form {
+        float : right;
+        margin : 25px 20px;
+      }
+      .menubar {
+        background-color :powderblue ;
+      }
+      .login-button{
+        float : right;
+        margin : 0px 0px;
+      }
+      footer{
+        background-color : #454545 ;
+      }
+      footer a{
+        text-align : center;
 
-        <style type="text/css">
-            body{
-                margin:0;
-                padding:0;
-                margin-top:0px;
-                padding-top : 0px ;
-            }
+      }
+      .body{
+        background-color : #454545;
+        width: 100%;
+        height: auto;
+      }
+      </style>
+  </head>
 
-            .Top{
-                background-color : #A4DDF5;
-                text-align : center;
-                color :black;
-                font-size : 18px;
-
-            }
-            .Id , .Pw {
-
-                float : left;
-            }
-            .Id label, .Pw label{
-                float:left;
-                padding-left:1rem;
-                font-size:1.3em;
-                color:#fff;
-                margin-right:5px
-
-            }
-            .Id input , .Pw input{
-                float : left;
-                padding-left: 2rem;
-                font-size : 1rem;
-                color : #fff;
-                margin-right : 5px;
-
-
-            }
-           #Topic{
-               font-size : 1.5rem;
-               color : #fff;
-               float : left;
-
-
-           }
-           header{
-               clear : both;
-               float : left;
-               width : 100%;
-               background-color :#A4DDF5;
-           }
-           #LoginForm{
-               float : left;
-               width : 100%;
-
-           }
-
-
-
-
-            .loginButton{
-                float : right;
-            }
-
-            .menubar{
-                 background-color :powderblue ;
-
-
-            }
-        </style>
-
-
-
-    </head>
-
-
-
-
-
-
-    <body>
+  <body>
     <header>
-        <p id="Topic">13050009 healthcare</p>
-        <div id="LoginForm">
-            <form name="LoginForm" method="post" action="./login.php" >
-                <div class="Id">
-                    <label for="Id">ID</label>
-                    <input type="email" name="email" placeholder="이메일을 입력하세요!" />
-                </div>
-
-                <div class="Pw">
-                    <label for="Pw">Password</label>
-                    <input type="password" name="Pw" placeholder="비밀번호를 입력하세요! "/>
-                </div>
-
-
-               <div class="loginButton">
-                    <input type="submit" id="loginButton" value="로그인" />
-                </div>
-
-            </form>
-
-        </div>
-
+      <p id="topic">healthcare</p>
+      <div id="login-form">
+        <form name="login-form" method="post" action="./login.php" >
+          <div class="id">
+            <label for="id">ID</label>
+            <input type="email" name="email" placeholder="이메일을 입력하세요!" />
+          </div>
+          <div class="pw">
+            <label for="pw">Password</label>
+            <input type="password" name="pw" placeholder="비밀번호를 입력하세요! "/>
+          </div>
+          <div class="login-button">
+            <input type="submit" id="login-button" value="로그인" />
+            <a href="./join.html" style="color : #fff; font-size: 0.7rem">회원가입이 필요하십니까?</a>
+          </div>
+        </form>
+      </div>
+    </header>
+    <div class="body">
+      <img src="main-pic.jpg" style="width:100% ;height : auto">
     </div>
-        </div>
-        </header>
-    </body>
-
-
+    <footer>
+      <a div class="footer-number" style="display : block ; font-size: 1.3rem">13050009</a>
+      <a div class="footer-email" style= "display : block ; font-size: 1.3rem">kgichan12@gmail.com</a>
+    </footer>
+  </body>
 </html>
