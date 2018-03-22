@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>회원가입을 환영합니다</title>
+  <style>
+    .join-form{
+      padding : 20px;
+      background-color: white;
+      float: left;
+      width : 33%
+      z-index : 1;
+      border-radius: .4rem;
+    }
+    body{
+    background-color:  #282C34;
+    }
+    label{
+      display: block;
+    }
+    .top h2{
+      background-color: #E0E2E3;
+      padding: 15px 10px;
+      border-radius: .4rem;
+    }
+
+  </style>
+</head>
+  <body>
+    <div class="join-form">
+      <div class="top">
+        <h2>HealthCare에 가입하시게 된걸 축하합니다.</h2>
+      </div>
+      <div class="join-email">
+        <label for="ID"><b>Email</b></label>
+        <input type="email" name ="ID" placeholder="아이디로 쓸 이메일">
+      </div>
+      <div class="join-password">
+        <label for="PW"><b>Password</b></label>
+        <input type="password" name="PW"  placeholder="비밀번호를 입력해주세요">
+      </div>
+      <div class="button">
+        <button type="submit" name="Join-button">Join</button>
+        <button type="reset" name="reset-button">Reset</button>
+      </div>
+    </div>
+
+  </body>
+</html>
