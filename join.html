@@ -7,9 +7,22 @@
       padding : 20px;
       background-color: white;
       float: left;
-      width : 33%
+      width : 33%;
       z-index : 1;
       border-radius: .4rem;
+      margin : 15% 33% 0 33%;
+      
+      
+    }
+    .join-form input{
+        width: 99%;
+        margin: 10px 0px;
+        border-style: none;
+        border-bottom : 3px dotted #282C34;
+        padding: .5rem 0rem .5rem 0rem;
+        padding-left: 5px;
+        font-size : 1rem;
+        outline: none; 
     }
     body{
     background-color:  #282C34;
@@ -22,27 +35,43 @@
       padding: 15px 10px;
       border-radius: .4rem;
     }
-
+    
+    .join_button input{
+        background-color: #282C34;
+        padding: 15px;
+        border-radius : .4rem;
+        font-size : 1rem;
+        color : white;
+        width :100%;
+        
+    }
+    
   </style>
+  
 </head>
   <body>
-    <div class="join-form">
-      <div class="top">
-        <h2>HealthCare에 가입하시게 된걸 축하합니다.</h2>
-      </div>
-      <div class="join-email">
-        <label for="ID"><b>Email</b></label>
-        <input type="email" name ="ID" placeholder="아이디로 쓸 이메일">
-      </div>
-      <div class="join-password">
-        <label for="PW"><b>Password</b></label>
-        <input type="password" name="PW"  placeholder="비밀번호를 입력해주세요">
-      </div>
-      <div class="button">
-        <button type="submit" name="Join-button">Join</button>
-        <button type="reset" name="reset-button">Reset</button>
+    <div>
+      <div class="join-form">
+        <div class="top">
+          <h2>HealthCare에 가입하기.</h2>
+        </div>
+      <form name="login" method="post" action="join.php">
+        <div class="join-email">
+          <label for="email"><b>Email</b></label>
+          <input type="email" name ="email" placeholder="아이디로 쓸 이메일">
+        </div>
+        <div class="join-password">
+          <label for="password"><b>Password</b></label>
+          <input type="password" name="password"  placeholder="비밀번호를 입력해주세요">
+        </div>
+        <div class="join_button">
+          <input type="submit" name="Join-button">
+          <input type="reset" name="reset-button">
+        </div>
+      </form>
+         
+        </div>
       </div>
     </div>
-
   </body>
 </html>
