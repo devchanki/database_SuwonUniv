@@ -34,6 +34,7 @@
       background-color: #E0E2E3;
       padding: 15px 10px;
       border-radius: .4rem;
+      text-align : center;
     }
     
     .join_button input{
@@ -53,7 +54,7 @@
     <div>
       <div class="join-form">
         <div class="top">
-          <h2>HealthCare에 가입하기.</h2>
+          <h2>HealthCare에 가입하기</h2>
         </div>
       <form name="login" method="post" action="join.php">
         <div class="join-email">
@@ -64,6 +65,9 @@
           <label for="password"><b>Password</b></label>
           <input type="password" name="password"  placeholder="비밀번호를 입력해주세요">
         </div>
+        <div class="join-name">
+          <label for="userName"><b>이름</b></label>
+          <input type="text" name="userName"  placeholder="본인의 이름을 입력하세요.">
         <div class="join_button">
           <input type="submit" name="Join-button">
           <input type="reset" name="reset-button">
