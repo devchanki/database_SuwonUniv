@@ -13,13 +13,12 @@ header("Content-Type:text/html;charset=utf-8");
  $email=$_POST['email'];
  $password=md5($_POST['password']);
  $userName=$_POST['userName'];
- echo $userName;
- echo $email;
- echo $password;
+ $teamName=$_POST['teamName'];
 
 
- $sql = "insert into userInfo (email, password ,name)";
- $sql = $sql. "values('$email','$password','$userName')";
+
+ $sql = "insert into userInfo (email, password ,name, teamname)";
+ $sql = $sql. "values('$email','$password','$userName', '$teamName')";
  if(! $sql )
 {
   die('Could not update data: ' . mysqli_error());
@@ -32,6 +31,7 @@ header("Content-Type:text/html;charset=utf-8");
 
  else{
   echo '에러가 발생했습니다. 다시 한번 확인후 가입해주세요.';
+  echo("<script>location.replace('./index.html');</script>");
   echo "Query: " . $sql . "\n";
   echo "Errno: " . $mysqli->errno . "\n";
   echo "Error: " . $mysqli->error . "\n";
