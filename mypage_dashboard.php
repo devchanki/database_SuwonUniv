@@ -1,7 +1,40 @@
 <?php
 session_start();
 
+if(!isset($_SESSION['login_session'])){
+  header("Location:./index.html");
+}
 
+if(!isset($_SESSION['login_session'])){
+  header("Location:./index.html");
+}
+$host = 'localhost';
+$user = 'root';
+$pw = 'chanki';
+$dbname = 'healthcare';
+$dbconnection = new mysqli($host, $user, $pw, $dbname);
+$dbconnection->set_charset("utf8");
+$time = date("Y-m-d");
+
+//password 받아온 값을 md5 해쉬화 해서 db랑 비교.
+
+$sql_water = " SELECT sum(water) FROM healthinfo WHERE time like '{$time}' and name like '{$_SESSION['login_session']['name']}' ";
+$res_water = $dbconnection ->query($sql_water);
+
+$sum_water = mysqli_fetch_array($res_water);
+$water_sum = $sum_water["sum(water)"];
+
+$sql_walk = " SELECT sum(walk) FROM healthinfo WHERE time like '{$time}' and name like '{$_SESSION['login_session']['name']}' ";
+$res_walk = $dbconnection ->query($sql_walk);
+
+$sum_walk = mysqli_fetch_array($res_walk);
+$walk_sum = $sum_walk["sum(walk)"];
+
+$sql_sleep = " SELECT sum(sleep) FROM healthinfo WHERE time like '{$time}' and name like '{$_SESSION['login_session']['name']}' ";
+$res_sleep = $dbconnection ->query($sql_sleep);
+
+$sum_sleep = mysqli_fetch_array($res_sleep);
+$sleep_sum = $sum_sleep["sum(sleep)"];
 
 ?>
 
@@ -111,45 +144,27 @@ session_start();
         <?=$_SESSION['login_session']['teamName']; ?>(팀)에 속해 계시는 <?=$_SESSION['login_session']['name']; ?>님 반갑습니다.
       </div>
 
-      <form name="inputHealth" method="post" action="healthcare_Input.php">
-
+      <div class="dashboard">
         <div class="card">
           <img src="walk.png" alt="walk" style="width:100%">
           <div class="container">
-          <h4><b>걸은 양을 입력하세요</b></h4>
-          <input type="text" name="walk" placeholder="걸은 양을 입력하세요">
+          <h4><b>걸은 양 : <?=$walk_sum?> (Km)</b></h4>
         </div>
       </div>
 
       <div class="card">
         <img src="water.png" alt="Water" style="width:100%">
           <div class="container">
-          <h4><b>물의 양을 입력하세요</b></h4>
-          <input type="text" name="water" placeholder="물의 양을 입력하세요">
+          <h4><b>물의 양 : <?=$water_sum?> (L)</b></h4>
         </div>
       </div>
 
       <div class="card">
         <img src="sleep.jpg" alt="sleep" style="width:100%">
         <div class="container">
-          <h4><b>수면 양을 입력하세요</b></h4>
-          <input type="text" name="sleep" placeholder="몇시간 주무셨습니까?">
+          <h4><b>수면 양 :<?=$sleep_sum?> (시간) </b></h4>
         </div>
       </div>
-
-      <div class="input_button">
-        <input type="submit" name="Join-button">
-        <input type="reset" name="reset-button">
-      </div>
-    </form>
-
-
-      <div class="rank">
-
-      </div>
-
-      <div class="talks">
-
       </div>
 
     </div>

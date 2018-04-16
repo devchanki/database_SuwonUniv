@@ -26,7 +26,7 @@
     $_SESSION['login_session']['email'] = $userInfo['email'];
     $_SESSION['login_session']['name'] = $userInfo['name'];
     $_SESSION['login_session']['memberId'] = $userInfo['memberId'];
-    $_SESSION['login_session']['teamName'] = $userName['teamName'];
+    $_SESSION['login_session']['teamName'] = $userInfo['teamname'];
 
 
   if(isset($_SESSION['login_session'])){
