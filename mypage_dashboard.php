@@ -61,7 +61,7 @@ $sleep_sum = $sum_sleep["sum(sleep)"];
     overflow: hidden;
     margin: 0px;
     padding: 0px;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     clear:both;
     }
     .input_button{
@@ -84,7 +84,7 @@ $sleep_sum = $sum_sleep["sum(sleep)"];
     .left_menu a {
     padding: 10px 8px 15px 16px;
     text-decoration: none;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: white;
     display: inline-block;
   }
@@ -104,9 +104,12 @@ $sleep_sum = $sum_sleep["sum(sleep)"];
     display: block;
   }
   .dashboard{
+    text-align: center;
     width : 100%;
-    background-color : ivory;
-
+    display: inline-block;
+    border-radius: .4rem;
+    background-color : #00C2FF;
+    margin-top: 40px;
   }
   .card {
     margin: 15px 10px 5px 10px;
@@ -133,7 +136,7 @@ $sleep_sum = $sum_sleep["sum(sleep)"];
     <div class="left_menu">
       <a href="./mypage_dashboard.php">Dashboard</a>
       <a href="./mypage.php">건강정보 입력</a>
-      <a href="#Team">팀 내의 경쟁순위</a>
+      <a href="./mypageRank.php">팀 내의 경쟁순위</a>
       <a href="#게시판">게시판</a>
 
       <a href="./logout.php" style="float : right">logout</a>
@@ -145,6 +148,7 @@ $sleep_sum = $sum_sleep["sum(sleep)"];
       </div>
 
       <div class="dashboard">
+        <h3>오늘의 건강정보 : <?=$time?></h3>
         <div class="card">
           <img src="walk.png" alt="walk" style="width:100%">
           <div class="container">

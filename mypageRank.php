@@ -1,8 +1,54 @@
 <?php
 session_start();
 
-$time=date("Y-m-d");
+if(!isset($_SESSION['login_session'])){
+  header("Location:./index.html");
+}
 
+if(!isset($_SESSION['login_session'])){
+  header("Location:./index.html");
+}
+$host = 'localhost';
+$user = 'root';
+$pw = 'chanki';
+$dbname = 'healthcare';
+$dbconnection = new mysqli($host, $user, $pw, $dbname);
+$dbconnection->set_charset("utf8");
+$time = date("Y-m-d");
+$time_month = date("Y-m");
+
+
+
+
+
+
+$sql_rank = "SELECT name, sum(walk)
+              FROM healthinfo WHERE name in
+              (
+                SELECT name
+                FROM userinfo
+                WHERE teamname
+                like '{$_SESSION['login_session']['teamName']}'
+              )
+              AND time like '{$time}'
+              GROUP BY name
+              ORDER BY sum(walk) DESC";
+
+$res_rank = $dbconnection ->query($sql_rank);
+
+$sql_rank_month = "SELECT name, sum(walk)
+              FROM healthinfo WHERE name in
+              (
+                SELECT name
+                FROM userinfo
+                WHERE teamname
+                like '{$_SESSION['login_session']['teamName']}'
+              )
+              AND time like '{$time_month}%'
+              GROUP BY name
+              ORDER BY sum(walk) DESC";
+
+              $res_rank_month = $dbconnection ->query($sql_rank_month);
 ?>
 
 <!DOCTYPE html>
@@ -76,7 +122,7 @@ $time=date("Y-m-d");
   }
 
   }
-  .status_bar{
+  .main_page .status_bar{
     text-align: center;
     background-color: #E0E2E3;
     padding: 15px 10px;
@@ -84,7 +130,11 @@ $time=date("Y-m-d");
     width: 100%;
     display: block;
   }
-
+ .today_rank, .monthly-rank{
+    background-color: #00C2FF;
+    margin-top: 20px;
+    text-align: center;
+  }
   .dashboard{
     width : 100%;
     background-color : ivory;
@@ -98,14 +148,7 @@ $time=date("Y-m-d");
     height: 200px;
     display: inline-block;
   }
-  .inputHealth{
-    text-align: center;
-width: 100%;
-display: inline-block;
-border-radius: .4rem;
-background-color: #00C2FF;
-margin-top: 40px;
-  }
+
   .card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   }
@@ -127,7 +170,7 @@ margin-top: 40px;
     <div class="left_menu">
       <a href="./mypage_dashboard.php">Dashboard</a>
       <a href="./mypage.php">건강정보 입력</a>
-      <a href="./mypageRank.php">팀 내의 경쟁순위</a>
+      <a href="#Team">팀 내의 경쟁순위</a>
       <a href="#게시판">게시판</a>
 
       <a href="./logout.php" style="float : right">logout</a>
@@ -140,47 +183,49 @@ margin-top: 40px;
         <h2><?=$_SESSION['login_session']['teamName']; ?>(팀)에 속해 계시는 <?=$_SESSION['login_session']['name']; ?>님 반갑습니다.</h2>
       </div>
 </div>
-<div class="inputHealth">
+
+      <div class="today_rank">
+        <h2>금일 팀 내의 걸음 순위 입니다.<br>
+          입력하지 않은 사람은 목록에서 제외됩니다.<br>
+          팀 이름 : <?=$_SESSION['login_session']['teamName'];?>
+        </h2>
+
+        <h3>
+        <?php
 
 
-      <form name="inputHealth" method="post" action="healthcare_Input.php">
-        <h3> <?=$time?> 날짜로 입력하신 내용이 기록됩니다. </h3>
-        <h3>빈칸없이 제출해 주세요. 없으실 경우는 0을 입력하세요.</h3>
-        <div class="card">
-          <img src="walk.png" alt="walk" style="width:100%">
-          <div class="container">
-          <h4><b>걸은 양을 입력하세요</b></h4>
-          <input type="text" name="walk" placeholder="걸은 양을 입력하세요">
-        </div>
+      while($row = mysqli_fetch_row($res_rank)) {
+
+          echo "이름: ".$row[0]; echo "    ";
+
+          echo "걸음의 합: " .$row[1];
+
+          echo "<br />";
+
+      }
+
+      ?>
+      </h3>
       </div>
 
-      <div class="card">
-        <img src="water.png" alt="Water" style="width:100%">
-          <div class="container">
-          <h4><b>물의 양을 입력하세요</b></h4>
-          <input type="text" name="water" placeholder="물의 양을 입력하세요">
-        </div>
-      </div>
+<div class="monthly-rank">
+  <h2>월간 순위입니다.</h2>
+    <?php
+      while($row = mysqli_fetch_row($res_rank_month)) {
 
-      <div class="card">
-        <img src="sleep.jpg" alt="sleep" style="width:100%">
-        <div class="container">
-          <h4><b>수면 양을 입력하세요</b></h4>
-          <input type="text" name="sleep" placeholder="몇시간 주무셨습니까?">
-        </div>
-      </div>
+          echo "이름: ".$row[0]; echo "    ";
 
+          echo "걸음의 합: " .$row[1]; echo "     ";
+          echo "월 평균 걸음수 : " .number_format((float)$row[1]/30, 2, '.', '');;
+          echo "<br />";
 
-      <div class="input_button">
-        <input type="submit" name="Join-button">
-        <input type="reset" name="reset-button">
-      </div>
-    </form>
-
+      }
+      ?>
 </div>
 
 
-    </div>
+
+
 
 
 
