@@ -64,6 +64,7 @@ $sql_rank_month = "SELECT name, sum(walk)
     padding:0;
     margin-top:0px;
     padding-top : 0px ;
+    background-color: #454545;
   }
   .left_menu {
     height: 15%;
@@ -127,11 +128,11 @@ $sql_rank_month = "SELECT name, sum(walk)
     background-color: #E0E2E3;
     padding: 15px 10px;
     border-radius: .4rem;
-    width: 100%;
+
     display: block;
   }
  .today_rank, .monthly-rank{
-    background-color: #00C2FF;
+    background-color: #E0E2E3;
     margin-top: 20px;
     text-align: center;
   }
@@ -168,31 +169,31 @@ $sql_rank_month = "SELECT name, sum(walk)
     line-height: 1.5;
     border-top: 1px solid #ccc;
     border-left: 1px solid #ccc;
-  margin : auto;
-}
-table th {
-    width: 100px;
-    padding: 10px;
-    font-weight: bold;
-    text-align: center;
-    vertical-align: top;
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    border-top: 1px solid #fff;
-    border-left: 1px solid #fff;
-    background: #eee;
+    margin : auto;
+  }
+  table th {
+      display: inline-flex;
+      padding: 10px;
+      font-weight: bold;
+      text-align: center;
+      vertical-align: top;
+      border-right: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      border-top: 1px solid #fff;
+      border-left: 1px solid #fff;
+      background: #eee;
 
-}
-table td {
-    width: 150px;
-    padding: 10px;
-    text-align: center;
-    vertical-align: top;
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    color: white;
-    background-color: #454545;
-}
+  }
+  table td {
+      display: inline-flex;
+      padding: 10px;
+      text-align: center;
+      vertical-align: top;
+      border-right: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      color: white;
+      background-color: #454545;
+  }
   input{
     border-style: none;
     border-bottom : 3px dotted #282C34;
@@ -207,24 +208,26 @@ table td {
       <a href="./mypage_dashboard.php">Dashboard</a>
       <a href="./mypage.php">건강정보 입력</a>
       <a href="./mypageRank.php">팀 내의 경쟁순위</a>
-      <a href="#게시판">게시판</a>
+      <a href="./shorttable.php">게시판</a>
 
       <a href="./logout.php" style="float : right">logout</a>
+      <a href="./gamdok.php" style="float : right">감독 메뉴</a>
     </div>
 
 
 
 <div class="main_page">
       <div class="status_bar">
-        <h2><?=$_SESSION['login_session']['teamName']; ?>(팀)에 속해 계시는 <?=$_SESSION['login_session']['name']; ?>님 반갑습니다.</h2>
+        <h4><?=$_SESSION['login_session']['teamName']; ?>(팀)에 속해 계시는 <?=$_SESSION['login_session']['name']; ?>님 반갑습니다.
+        <?php if ($_SESSION['login_session']['director'] == "true") {print "직책 : 감독";} else {print "일반 사용자입니다";}?></h4>
       </div>
 </div>
 
       <div class="today_rank">
-        <h2>금일 팀 내의 걸음 순위 입니다.<br>
+        <h3>금일 팀 내의 걸음 순위 입니다.<br>
           입력하지 않은 사람은 목록에서 제외됩니다.<br>
           팀 이름 : <?=$_SESSION['login_session']['teamName'];?>
-        </h2>
+        </h3>
 
         <h3>
           <div class="table">
@@ -234,12 +237,11 @@ table td {
           while($row = mysqli_fetch_row($res_rank)) {
             echo "<table>";
             echo "<tr>";
-            echo "<th>이름: </th> <td> {$row[0]} </td>";
-            echo "<th>걸은 거리: </th> <td> {$row[1]} km</td>";
+            echo "<th>이름</th> <td> {$row[0]} </td>";
+            echo "<th>걸은 거리</th> <td> {$row[1]} km</td>";
             echo "</tr>";
             echo "</table>";
-
-          }
+        }
 
           ?>
           </div>
@@ -248,7 +250,7 @@ table td {
       </div>
 
 <div class="monthly-rank">
-  <h2>월간 순위입니다. 아무도 없을 경우 표시되지 않습니다.</h2>
+  <h3>월간 순위입니다. 아무도 없을 경우 표시되지 않습니다.</h3>
   <div class="table1">
 
 

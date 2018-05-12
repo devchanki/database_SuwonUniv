@@ -14,11 +14,12 @@ header("Content-Type:text/html;charset=utf-8");
  $password=md5($_POST['password']);
  $userName=$_POST['userName'];
  $teamName=$_POST['teamName'];
+ $director=$_POST['director'];
 
 
 
- $sql = "insert into userInfo (email, password ,name, teamname)";
- $sql = $sql. "values('$email','$password','$userName', '$teamName')";
+ $sql = "insert into userInfo (email, password ,name, teamname,director)";
+ $sql = $sql. "values('$email','$password','$userName', '$teamName','$director')";
  if(! $sql )
 {
   die('Could not update data: ' . mysqli_error());

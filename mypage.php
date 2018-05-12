@@ -62,24 +62,25 @@ $time=date("Y-m-d");
     font-size: 1.2rem;
     color: white;
     display: inline-block;
-  }
+    }
+    body{
+      background-color: #454545;
+    }
+    .left_menu a:hover {
+      color: #f1f1f1;
+    }
+    .main_page{
+      text-align: center;
+      width: 100%;
+      display: inline-block;
+      border-radius: .4rem;
+      background-color: #E0E2E3;
+    }
 
-  .left_menu a:hover {
-    color: #f1f1f1;
-  }
-  .main_page{
-    text-align: center;
-    width: 100%;
-    display: inline-block;
-    border-radius: .4rem;
-    background-color: #E0E2E3;
-  }
-
-  }
   .status_bar{
     text-align: center;
     background-color: #E0E2E3;
-    padding: 15px 10px;
+    padding: 5px 10px;
     border-radius: .4rem;
     width: 100%;
     display: block;
@@ -98,13 +99,13 @@ $time=date("Y-m-d");
     height: 200px;
     display: inline-block;
   }
-  .inputHealth{
+  .inputHealth, .sikdan{
     text-align: center;
-width: 100%;
-display: inline-block;
-border-radius: .4rem;
-background-color: #00C2FF;
-margin-top: 40px;
+    width: 100%;
+    display: inline-block;
+    border-radius: .4rem;
+    background-color: #E0E2E3;
+    margin-top: 40px;
   }
   .card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
@@ -128,16 +129,22 @@ margin-top: 40px;
       <a href="./mypage_dashboard.php">Dashboard</a>
       <a href="./mypage.php">건강정보 입력</a>
       <a href="./mypageRank.php">팀 내의 경쟁순위</a>
-      <a href="#게시판">게시판</a>
+      <a href="./shorttable.php">게시판</a>
+
 
       <a href="./logout.php" style="float : right">logout</a>
+      <a href="./gamdok.php" style="float : right">감독 메뉴</a>
     </div>
 
 
 
 <div class="main_page">
       <div class="status_bar">
-        <h2><?=$_SESSION['login_session']['teamName']; ?>(팀)에 속해 계시는 <?=$_SESSION['login_session']['name']; ?>님 반갑습니다.</h2>
+      <h4>
+
+        <?=$_SESSION['login_session']['teamName']; ?>(팀)에 속해 계시는 <?=$_SESSION['login_session']['name']; ?>님 반갑습니다.
+        <?php if ($_SESSION['login_session']['director'] == "true") {print "직책 : 감독";} else {print "일반 사용자입니다";}?>
+      </h4>
       </div>
 </div>
 <div class="inputHealth">
@@ -177,7 +184,21 @@ margin-top: 40px;
       </div>
     </form>
 
-</div>
+  </div>
+
+  <div class="sikdan">
+    <form name="inputsikdan" method="post" action="healthcare_sikdan.php">
+      <h3>오늘 먹을 목표음식을 입력하세요</h3>
+
+    <input type="text" name="sikdan" placeholder="음식 이름">
+    <input type="text" name="calorie" placeholder="칼로리">
+      <div class="input_button">
+        <input type="submit" name="Join-button">
+        <input type="reset" name="reset-button">
+      </div>
+    </form>
+  </div>
+
 
 
     </div>

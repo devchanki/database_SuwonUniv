@@ -36,6 +36,8 @@ $res_sleep = $dbconnection ->query($sql_sleep);
 $sum_sleep = mysqli_fetch_array($res_sleep);
 $sleep_sum = $sum_sleep["sum(sleep)"];
 
+$sql_sikdan = " SELECT sum(sleep) FROM healthinfo WHERE time like '{$time}' and name like '{$_SESSION['login_session']['name']}' ";
+$res_sikdan = $dbconnection ->query($sql_sikdan);
 ?>
 
 <!DOCTYPE html>
@@ -98,9 +100,8 @@ $sleep_sum = $sum_sleep["sum(sleep)"];
   .status_bar{
     text-align: center;
     background-color: #E0E2E3;
-    padding: 15px 10px;
+    padding: 10px 10px;
     border-radius: .4rem;
-    width: 100%;
     display: block;
   }
   .dashboard{
@@ -137,41 +138,46 @@ $sleep_sum = $sum_sleep["sum(sleep)"];
       <a href="./mypage_dashboard.php">Dashboard</a>
       <a href="./mypage.php">건강정보 입력</a>
       <a href="./mypageRank.php">팀 내의 경쟁순위</a>
-      <a href="#게시판">게시판</a>
+      <a href="./shorttable.php">게시판</a>
 
       <a href="./logout.php" style="float : right">logout</a>
+      <a href="./gamdok.php" style="float : right">감독 메뉴</a>
     </div>
 
     <div class="main_page">
       <div class="status_bar">
-        <?=$_SESSION['login_session']['teamName']; ?>(팀)에 속해 계시는 <?=$_SESSION['login_session']['name']; ?>님 반갑습니다.
-      </div>
+      <h4>  <?=$_SESSION['login_session']['teamName']; ?>(팀)에 속해 계시는 <?=$_SESSION['login_session']['name']; ?>님 반갑습니다.
+      <?php if ($_SESSION['login_session']['director'] == "true") {print "직책 : 감독";} else {print "일반 사용자입니다";}?></h4>
+    </div>
 
       <div class="dashboard">
-        <h3>오늘의 건강정보 : <?=$time?></h3>
-        <div class="card">
-          <img src="walk.png" alt="walk" style="width:100%">
-          <div class="container">
-          <h4><b>걸은 양 : <?=$walk_sum?> (Km)</b></h4>
-        </div>
+          <h3>오늘의 건강정보 : <?=$time?></h3>
+          <div class="card">
+            <img src="walk.png" alt="walk" style="width:100%">
+            <div class="container">
+              <h4><b>걸은 양 : <?=$walk_sum?> (Km)</b></h4>
+            </div>
+          </div>
+
+          <div class="card">
+            <img src="water.png" alt="Water" style="width:100%">
+              <div class="container">
+              <h4><b>물의 양 : <?=$water_sum?> (L)</b></h4>
+            </div>
+          </div>
+
+          <div class="card">
+            <img src="sleep.jpg" alt="sleep" style="width:100%">
+            <div class="container">
+              <h4><b>수면 양 :<?=$sleep_sum?> (시간) </b></h4>
+            </div>
+          </div>
       </div>
 
-      <div class="card">
-        <img src="water.png" alt="Water" style="width:100%">
-          <div class="container">
-          <h4><b>물의 양 : <?=$water_sum?> (L)</b></h4>
-        </div>
-      </div>
 
-      <div class="card">
-        <img src="sleep.jpg" alt="sleep" style="width:100%">
-        <div class="container">
-          <h4><b>수면 양 :<?=$sleep_sum?> (시간) </b></h4>
-        </div>
-      </div>
-      </div>
+      <div class="sikdan">
 
-    </div>
+      </div>
 
 
 
