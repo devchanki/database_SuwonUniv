@@ -13,12 +13,13 @@
     die("ERROR: Could not connect. " . mysqli_connect_error());
   }
  $memberid = $_SESSION['login_session']['memberId'];
- $name = $_SESSION['login_session']['name'];
- $food = $_POST['sikdan'];
- $calorie = $_POST['calorie'];
- $time = $_POST['date'];
- $sql = "insert into sikdan(food,calorie,time,memberId)";
- $sql = $sql. "values('$food','$calorie','$time','$memberid')";
+ $name = $_POST['name'];
+ $part = $_POST['part'];
+ $times = $_POST['time'];
+
+ $time = $_POST['date1'];
+ $sql = "insert into weight(bodypart,name,times,memberId,time)";
+ $sql = $sql. "values('$part','$name','$times','$memberid','$time')";
  if(! $sql )
 {
   die('Could not update data: ' . mysqli_error());

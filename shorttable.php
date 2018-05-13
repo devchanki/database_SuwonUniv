@@ -45,60 +45,76 @@ $res_all_query = $dbconnection ->query($all_table_query);
     font-size: 1.2rem;
     color: white;
     display: inline-block;
-  }
+    }
 
-  .left_menu a:hover {
-    color: #f1f1f1;
-  }
-  .status_bar{
-    text-align: center;
-    background-color: #E0E2E3;
-    padding: 5px 10px;
-    border-radius: .4rem;
-    display: block;
-  }
-  .message-input , .team-table,.all-table{
-    text-align: center;
-    width: 100%;
-    display: inline-block;
-    border-radius: .4rem;
-    background-color: #E0E2E3;
-    margin-top: 40px;
-  }
-  table {
-    border-collapse: separate;
-    border-spacing: 0;
-    text-align: left;
-    line-height: 1.5;
-    border-top: 1px solid #ccc;
-    border-left: 1px solid #ccc;
-    margin : auto;
-  }
-  table th {
-      /* width: 100px; */
-      display: inline-flex;
-      padding: 10px;
-      font-weight: bold;
+    .left_menu a:hover {
+      color: #f1f1f1;
+    }
+    .status_bar{
       text-align: center;
-      vertical-align: top;
-      border-right: 1px solid #ccc;
-      border-bottom: 1px solid #ccc;
-      border-top: 1px solid #fff;
-      border-left: 1px solid #fff;
-      background: #eee;
+      background-color: #E0E2E3;
+      padding: 5px 10px;
+      border-radius: .4rem;
+      display: block;
+    }
+    .message-input , .team-table,.all-table{
+      text-align: center;
+      width: 100%;
+      display: inline-block;
+      border-radius: .4rem;
+      background-color: #E0E2E3;
+      margin-top: 40px;
+    }
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+      text-align: left;
+      line-height: 1.5;
+      border-top: 1px solid #ccc;
+      border-left: 1px solid #ccc;
+      margin : auto;
+    }
+    table th {
+        /* width: 100px; */
+        display: inline-flex;
+        padding: 10px;
+        font-weight: bold;
+        text-align: center;
+        vertical-align: top;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        border-top: 1px solid #fff;
+        border-left: 1px solid #fff;
+        background: #eee;
 
-  }
-  table td {
-      /* width: 150px; */
-      padding: 10px;
-      text-align: center;
-      vertical-align: top;
-      border-right: 1px solid #ccc;
-      border-bottom: 1px solid #ccc;
-      color: white;
-      background-color: #454545;
-      display: inline-flex;
-  }
+    }
+    table td {
+        /* width: 150px; */
+        padding: 10px;
+        text-align: center;
+        vertical-align: top;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        color: white;
+        background-color: #454545;
+        display: inline-flex;
+    }
+
+    .message-input input{
+      border-style: dotted;
+      border-width: 3px;
+    }
+    .input_button input{
+        background-color: #282C34;
+        border-style: none;
+        padding: 15px;
+        border-radius : .4rem;
+        font-size : 1rem;
+        color : white;
+        width :15%;
+        margin: 10px;
+
+    }
     </style>
   </head>
   <body>
@@ -108,8 +124,8 @@ $res_all_query = $dbconnection ->query($all_table_query);
       <a href="./mypageRank.php">팀 내의 경쟁순위</a>
       <a href="./shorttable.php">게시판</a>
 
-
       <a href="./logout.php" style="float : right">logout</a>
+      <a href="./myinfo.php" style="float : right">개인 설정</a>
       <a href="./gamdok.php" style="float : right">감독 메뉴</a>
     </div>
 

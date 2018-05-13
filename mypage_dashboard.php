@@ -15,29 +15,23 @@ $dbname = 'healthcare';
 $dbconnection = new mysqli($host, $user, $pw, $dbname);
 $dbconnection->set_charset("utf8");
 $time = date("Y-m-d");
+$monthly = date("Y-m");
 
 //password 받아온 값을 md5 해쉬화 해서 db랑 비교.
 
-$sql_water = " SELECT sum(water) FROM healthinfo WHERE time like '{$time}' and name like '{$_SESSION['login_session']['name']}' ";
-$res_water = $dbconnection ->query($sql_water);
+$sql_sum = " SELECT sum(walk),sum(water), sum(sleep) FROM healthinfo WHERE time like '{$time}' and memberId like '{$_SESSION['login_session']['memberId']}' ";
+$res_sum = $dbconnection ->query($sql_sum);
+$row = mysqli_fetch_row($res_sum);
 
-$sum_water = mysqli_fetch_array($res_water);
-$water_sum = $sum_water["sum(water)"];
+$sql_monthly_sum = " SELECT sum(walk),sum(water), sum(sleep) FROM healthinfo WHERE time like '{$monthly}%' and memberId like '{$_SESSION['login_session']['memberId']}' ";
+$res_monthly_sum = $dbconnection ->query($sql_monthly_sum);
+$mrow = mysqli_fetch_row($res_monthly_sum);
 
-$sql_walk = " SELECT sum(walk) FROM healthinfo WHERE time like '{$time}' and name like '{$_SESSION['login_session']['name']}' ";
-$res_walk = $dbconnection ->query($sql_walk);
-
-$sum_walk = mysqli_fetch_array($res_walk);
-$walk_sum = $sum_walk["sum(walk)"];
-
-$sql_sleep = " SELECT sum(sleep) FROM healthinfo WHERE time like '{$time}' and name like '{$_SESSION['login_session']['name']}' ";
-$res_sleep = $dbconnection ->query($sql_sleep);
-
-$sum_sleep = mysqli_fetch_array($res_sleep);
-$sleep_sum = $sum_sleep["sum(sleep)"];
-
-$sql_sikdan = " SELECT sum(sleep) FROM healthinfo WHERE time like '{$time}' and name like '{$_SESSION['login_session']['name']}' ";
+$sql_sikdan = " SELECT food, calorie,num FROM sikdan WHERE time like '{$time}' and memberId like '{$_SESSION['login_session']['memberId']}' ";
 $res_sikdan = $dbconnection ->query($sql_sikdan);
+
+$sql_weight = " SELECT bodypart, name, times , num FROM weight WHERE time like '{$time}' and memberId like '{$_SESSION['login_session']['memberId']}' ";
+$res_weight = $dbconnection ->query($sql_weight);
 ?>
 
 <!DOCTYPE html>
@@ -53,6 +47,7 @@ $res_sikdan = $dbconnection ->query($sql_sikdan);
     padding:0;
     margin-top:0px;
     padding-top : 0px ;
+    /* background-color: #454545; */
   }
   .left_menu {
     height: 15%;
@@ -89,47 +84,80 @@ $res_sikdan = $dbconnection ->query($sql_sikdan);
     font-size: 1.2rem;
     color: white;
     display: inline-block;
-  }
+    }
 
-  .left_menu a:hover {
-    color: #f1f1f1;
-  }
-  .main_page{
-    width: 100%;
-  }
-  .status_bar{
-    text-align: center;
-    background-color: #E0E2E3;
-    padding: 10px 10px;
-    border-radius: .4rem;
-    display: block;
-  }
-  .dashboard{
-    text-align: center;
-    width : 100%;
-    display: inline-block;
-    border-radius: .4rem;
-    background-color : #00C2FF;
-    margin-top: 40px;
-  }
-  .card {
-    margin: 15px 10px 5px 10px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    width: 200px;
-    height: 200px;
-    display: inline-block;
-  }
+    .left_menu a:hover {
+      color: #f1f1f1;
+    }
+    .main_page{
+      width: 100%;
+    }
+    .status_bar{
+      text-align: center;
+      background-color: #E0E2E3;
+      padding: 10px 10px;
+      border-radius: .4rem;
+      display: block;
+    }
+    .dashboard , .sikdan,.weight, .dashboard_mon{
+      text-align: center;
+      width : 100%;
+      display: inline-block;
+      border-radius: .4rem;
+      background-color : #E0E2E3;
+      margin-top: 40px;
+    }
+    .card {
+      margin: 15px 10px 5px 10px;
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+      transition: 0.3s;
+      width: 200px;
+      height: 200px;
+      display: inline-block;
+    }
 
-  .card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-  }
+    .card:hover {
+      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
 
-  .container {
-    padding: 2px 16px;
-  }
+    .container {
+      padding: 2px 16px;
+    }
   form{
     background-color: ivory;
+  }
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+    line-height: 1.5;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    margin : auto;
+  }
+  table th {
+      /* display: inline-flex; */
+      padding: 10px;
+      font-weight: bold;
+      text-align: center;
+      vertical-align: top;
+      border-right: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      border-top: 1px solid #fff;
+      border-left: 1px solid #fff;
+      background: #eee;
+
+  }
+  table td {
+      /* display: inline-flex; */
+      padding: 10px;
+      text-align: center;
+      vertical-align: top;
+      border-right: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      color: white;
+      background-color: #454545;
+      width: 70px;
   }
   </style>
 
@@ -141,6 +169,7 @@ $res_sikdan = $dbconnection ->query($sql_sikdan);
       <a href="./shorttable.php">게시판</a>
 
       <a href="./logout.php" style="float : right">logout</a>
+      <a href="./myinfo.php" style="float : right">개인 설정</a>
       <a href="./gamdok.php" style="float : right">감독 메뉴</a>
     </div>
 
@@ -150,32 +179,90 @@ $res_sikdan = $dbconnection ->query($sql_sikdan);
       <?php if ($_SESSION['login_session']['director'] == "true") {print "직책 : 감독";} else {print "일반 사용자입니다";}?></h4>
     </div>
 
-      <div class="dashboard">
-          <h3>오늘의 건강정보 : <?=$time?></h3>
-          <div class="card">
-            <img src="walk.png" alt="walk" style="width:100%">
-            <div class="container">
-              <h4><b>걸은 양 : <?=$walk_sum?> (Km)</b></h4>
-            </div>
-          </div>
+    <div class="">
 
-          <div class="card">
-            <img src="water.png" alt="Water" style="width:100%">
-              <div class="container">
-              <h4><b>물의 양 : <?=$water_sum?> (L)</b></h4>
-            </div>
-          </div>
+    </div>
 
-          <div class="card">
-            <img src="sleep.jpg" alt="sleep" style="width:100%">
-            <div class="container">
-              <h4><b>수면 양 :<?=$sleep_sum?> (시간) </b></h4>
-            </div>
+    <div class="dashboard">
+        <h3>오늘의 건강정보 : <?=$time?></h3>
+        <div class="card">
+          <img src="walk.png" alt="walk" style="width:100%">
+          <div class="container">
+            <h4><b>걸은 양 : <?=$row[0]?> (Km)</b></h4>
           </div>
-      </div>
+        </div>
+
+        <div class="card">
+          <img src="water.png" alt="Water" style="width:100%">
+            <div class="container">
+            <h4><b>물의 양 : <?=$row[1]?> (L)</b></h4>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="sleep.jpg" alt="sleep" style="width:100%">
+          <div class="container">
+            <h4><b>수면 양 :<?=$row[2]?> (시간) </b></h4>
+          </div>
+        </div>
+    </div>
+
+    <div class="dashboard_mon">
+        <h3>월간 누적 건강정보 : <?=$time?></h3>
+        <div class="card">
+          <img src="walk.png" alt="walk" style="width:100%">
+          <div class="container">
+            <h4><b>걸은 양 : <?=$mrow[0]?> (Km)</b></h4>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="water.png" alt="Water" style="width:100%">
+            <div class="container">
+            <h4><b>물의 양 : <?=$mrow[1]?> (L)</b></h4>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="sleep.jpg" alt="sleep" style="width:100%">
+          <div class="container">
+            <h4><b>수면 양 :<?=$mrow[2]?> (시간) </b></h4>
+          </div>
+        </div>
+    </div>
 
 
       <div class="sikdan">
+        <h4>식단 checklist 입니다.</h4>
+        <?php
+        while($row = mysqli_fetch_row($res_sikdan)) {
+          echo "<table>";
+          echo "<tr>";
+          echo "<th>음식이름</th> <td> {$row[0]} </td>";
+          echo "<th>칼로리</th> <td> {$row[1]} </td>";
+          echo "<td> <a href ='deleteSikdan.php?id={$row[2]}'>삭제하기</a> </td>";
+          echo "</tr>";
+          echo "</table>";
+        }
+
+        ?>
+      </div>
+
+        <div class="weight">
+          <h4>근력운동 알림장</h4>
+          <?php
+          while($row = mysqli_fetch_row($res_weight)) {
+            echo "<table>";
+            echo "<tr>";
+            echo "<th>운동 부위</th> <td> {$row[0]} </td>";
+            echo "<th>운동 이름</th> <td> {$row[1]} </td>";
+            echo "<th>횟수</th> <td> {$row[2]} </td>";
+            echo "<td> <a href ='deleteWeight.php?id={$row[3]}'>삭제하기</a> </td>";
+            echo "</tr>";
+            echo "</table>";
+          }
+
+          ?>
 
       </div>
 

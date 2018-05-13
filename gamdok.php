@@ -13,8 +13,11 @@ if( $_SESSION['login_session']['director'] =='false'){
   $dbconnection->set_charset("utf8");
   $time=date("Y-m-d");
 
-  $sql_name = "SELECT name FROM userinfo WHERE teamname like '{$_SESSION['login_session']['teamName']}' ";
-  $res_name = $dbconnection ->query($sql_name);
+  $sql_auth_name = "SELECT name FROM userinfo WHERE teamname like '{$_SESSION['login_session']['teamName']}' and auth like 'true' ";
+  $res_name = $dbconnection ->query($sql_auth_name);
+
+  $sql_unauth_name = "SELECT name,memberId FROM userinfo WHERE teamname like '{$_SESSION['login_session']['teamName']}' and auth like 'false' ";
+  $res_unauth_name = $dbconnection ->query($sql_unauth_name);
 
 
 ?>
@@ -26,13 +29,14 @@ if( $_SESSION['login_session']['director'] =='false'){
     <meta charset="utf-8">
     <title>감독 페이지</title>
     <style>
-    .team-member , .daily{
+    .team-member , .daily , .unauth{
       text-align: center;
       width: 100%;
       display: inline-block;
       border-radius: .4rem;
       background-color: #E0E2E3;
       margin-top: 40px;
+      padding-bottom: 10px;
     }
     body {
       margin:0;
@@ -121,6 +125,10 @@ if( $_SESSION['login_session']['director'] =='false'){
       height: 200px;
       display: inline-block;
     }
+    a{
+      text-decoration: none;
+      color: red;
+    }
     </style>
   </head>
   <body>
@@ -132,6 +140,7 @@ if( $_SESSION['login_session']['director'] =='false'){
 
 
       <a href="./logout.php" style="float : right">logout</a>
+      <a href="./myinfo.php" style="float : right">개인 설정</a>
       <a href="./gamdok.php" style="float : right">감독 메뉴</a>
     </div>
 
@@ -155,26 +164,38 @@ if( $_SESSION['login_session']['director'] =='false'){
         echo "<table>";
         echo "<tr>";
         echo "<th>이름: </th> <td> {$row[0]} </td>";
+
         echo "</tr>";
         echo "</table>";
       }
       ?>
+    </div>
 
+    <div class="unauth">
+      <h4>승인되지 않은 회원입니다.</h4>
+      <?php
+      while($row = mysqli_fetch_row($res_unauth_name)) {
+        echo "<table>";
+        echo "<tr>";
+        echo "<th>이름: </th> <td> {$row[0]} </td>";
+        echo "<td> <a href ='changeAuth.php?id={$row[1]}'>가입 승인하기 </a> </td>";
+        echo "</tr>";
+        echo "</table>";
+      }
 
-
-      </div>
+      ?>
+    </div>
       <div class="daily">
 
 
-            <form name="inputHealth" method="post" action="healthcare_Input.php">
+            <form name="inputHealth" method="post" action="goal.php">
               <h3> <?=$time?> 날짜로 입력하신 내용이 기록됩니다. </h3>
               <h3> 목표치를 입력해주세요.</h3>
               <div class="card">
                 <img src="walk.png" alt="walk" style="width:100%">
                 <div class="container">
-                <h4><b>걸은 양을 입력하세요</b></h4>
-                <input type="text" name="name" placeholder="팀원 이름">
-                <input type="text" name="walk" placeholder="걸은 양을 입력하세요">
+                <h4><b>정하고 싶은 목표치를 입력해주세요</b></h4>
+                <input type="text" name="walk" placeholder="목표량을 입력해주세요">
               </div>
             </div>
 

@@ -28,14 +28,23 @@
     $_SESSION['login_session']['memberId'] = $userInfo['memberId'];
     $_SESSION['login_session']['teamName'] = $userInfo['teamname'];
     $_SESSION['login_session']['director'] = $userInfo['director'];
-
-
-  if(isset($_SESSION['login_session'])){
-    header("Location:./mypage.php");
+    $_SESSION['login_session']['auth'] = $userInfo['auth'];
   }
 
-}else{
-  echo "<script>alert('로그인에 실패했습니다.'); location.href='/index.html'; </script>";
-}
+  if(isset($_SESSION['login_session'])){
+
+      if($_SESSION['login_session']['auth'] == 'true'){
+        header("Location:./mypage.php");
+      }
+
+      else{
+        echo "<script> alert('미승인 유저입니다. 팀장이 승인할때까지 기다려주세요!'); location.href='/index.html'; </script>";
+      }
+  }
+
+  else{
+    echo "<script>alert('로그인에 실패했습니다.'); location.href='/index.html'; </script>";
+  }
+
 
 ?>

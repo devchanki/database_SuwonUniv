@@ -19,10 +19,9 @@ $time_month = date("Y-m");
 
 
 
+$sql_walk = " SELECT sum(walk) FROM healthinfo WHERE time like '{$time}' and memberId like '{$_SESSION['login_session']['memberId']}' ";
 
-
-
-$sql_rank = "SELECT name, sum(walk)
+$sql_rank = "SELECT ANY_VALUE(name), sum(walk),ANY_VALUE(memberId)
               FROM healthinfo WHERE name in
               (
                 SELECT name
@@ -31,12 +30,12 @@ $sql_rank = "SELECT name, sum(walk)
                 like '{$_SESSION['login_session']['teamName']}'
               )
               AND time like '{$time}'
-              GROUP BY name
+              GROUP BY memberId
               ORDER BY sum(walk) DESC";
 
 $res_rank = $dbconnection ->query($sql_rank);
 
-$sql_rank_month = "SELECT name, sum(walk)
+$sql_rank_month =" SELECT ANY_VALUE(name), sum(walk),ANY_VALUE(memberId)
               FROM healthinfo WHERE name in
               (
                 SELECT name
@@ -45,7 +44,7 @@ $sql_rank_month = "SELECT name, sum(walk)
                 like '{$_SESSION['login_session']['teamName']}'
               )
               AND time like '{$time_month}%'
-              GROUP BY name
+              GROUP BY memberId
               ORDER BY sum(walk) DESC";
 
               $res_rank_month = $dbconnection ->query($sql_rank_month);
@@ -64,7 +63,7 @@ $sql_rank_month = "SELECT name, sum(walk)
     padding:0;
     margin-top:0px;
     padding-top : 0px ;
-    background-color: #454545;
+    /* background-color: #454545; */
   }
   .left_menu {
     height: 15%;
@@ -157,8 +156,7 @@ $sql_rank_month = "SELECT name, sum(walk)
   .container {
     padding: 2px 16px;
   }
-  .table, .table1{
-
+  .table, .table1, .table2{
     text-align: center;
     margin: 10px;
   }
@@ -172,7 +170,7 @@ $sql_rank_month = "SELECT name, sum(walk)
     margin : auto;
   }
   table th {
-      display: inline-flex;
+      /* display: inline-flex; */
       padding: 10px;
       font-weight: bold;
       text-align: center;
@@ -185,7 +183,7 @@ $sql_rank_month = "SELECT name, sum(walk)
 
   }
   table td {
-      display: inline-flex;
+      /* display: inline-flex; */
       padding: 10px;
       text-align: center;
       vertical-align: top;
@@ -193,6 +191,7 @@ $sql_rank_month = "SELECT name, sum(walk)
       border-bottom: 1px solid #ccc;
       color: white;
       background-color: #454545;
+      width: 70px;
   }
   input{
     border-style: none;
@@ -211,6 +210,7 @@ $sql_rank_month = "SELECT name, sum(walk)
       <a href="./shorttable.php">게시판</a>
 
       <a href="./logout.php" style="float : right">logout</a>
+      <a href="./myinfo.php" style="float : right">개인 설정</a>
       <a href="./gamdok.php" style="float : right">감독 메뉴</a>
     </div>
 
@@ -239,6 +239,7 @@ $sql_rank_month = "SELECT name, sum(walk)
             echo "<tr>";
             echo "<th>이름</th> <td> {$row[0]} </td>";
             echo "<th>걸은 거리</th> <td> {$row[1]} km</td>";
+            echo "<th>이름을 구별하기 위한 고유 번호</th> <td> {$row[2]} </td>";
             echo "</tr>";
             echo "</table>";
         }
@@ -251,21 +252,22 @@ $sql_rank_month = "SELECT name, sum(walk)
 
 <div class="monthly-rank">
   <h3>월간 순위입니다. 아무도 없을 경우 표시되지 않습니다.</h3>
-  <div class="table1">
-
-
+  <div class="table">
+    <h3>
     <?php
       while($row = mysqli_fetch_row($res_rank_month)) {
           echo "<table>";
           echo "<tr>";
           echo "<th>이름: </th> <td> {$row[0]} </td>";
 
-          echo "<th>걸은 거리 (km): </th> <td> {$row[1]} km</td>";
+          echo "<th>걸은 거리 (km): </th> <td> {$row[1]} </td>";
           echo "<th>월 평균 걸은 거리 (km): </th> <td> " ; echo number_format((float)$row[1]/date("t"), 2, '.', ''); echo "km</td>";
+          echo "<th>이름을 구별하기 위한 고유 번호</th> <td> {$row[2]}</td>";
           echo "</tr>";
           echo "</table>";
       }
       ?>
+      </h3>
       </div>
 </div>
 

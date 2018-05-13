@@ -16,11 +16,17 @@ $letter=$_POST['table'];
 $open=$_POST['open'];
 $teaminfo = $_SESSION['login_session']['teamName'];
 $name = $_SESSION['login_session']['name'];
+$id = $_SESSION['login_session']['memberId'];
+
+
 $time = date("Y-m-d");
-$sql = "insert into shorttable (name,letter,time,open,teamname)";
-$sql = $sql. "values('$name','$letter','$time','$open','$teaminfo')";
+$sql = "insert into shorttable (name,letter,time,open,teamname,memberId)";
+$sql = $sql. "values('$name','$letter','$time','$open','$teaminfo','$id')";
 
-
+if(!$letter){
+  echo "<script>alert('텍스트를 입력해주세요'); location.href='/shorttable.php'; </script>";
+}
+else{
 
 if(!$sql )
 {
@@ -38,5 +44,6 @@ echo "Query: " . $sql . "\n";
 echo "Errno: " . $mysqli->errno . "\n";
 echo "Error: " . $mysqli->error . "\n";
 exit;
+}
 }
 ?>

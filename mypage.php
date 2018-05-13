@@ -2,7 +2,7 @@
 session_start();
 
 $time=date("Y-m-d");
-
+$tommorrow =date("Ymd", strtotime("+1 day"));
 ?>
 
 <!DOCTYPE html>
@@ -55,6 +55,28 @@ $time=date("Y-m-d");
     form{
       display: inline;
     }
+    input[type="radio"] {
+    display:none;
+    }
+
+    input[type="radio"] + label {
+        color:black;
+        font-family:Arial, sans-serif;
+    }
+
+    input[type="radio"] + label span {
+        display:inline-block;
+        width:19px;
+        height:19px;
+        margin:-2px 10px 0 0;
+        vertical-align:middle;
+        background:url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/check_radio_sheet.png) -38px top no-repeat;
+        cursor:pointer;
+      }
+
+  input[type="radio"]:checked + label span {
+    background:url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/check_radio_sheet.png) -57px top no-repeat;
+  }
 
     .left_menu a {
     padding: 10px 8px 15px 16px;
@@ -63,9 +85,9 @@ $time=date("Y-m-d");
     color: white;
     display: inline-block;
     }
-    body{
+    /* body{
       background-color: #454545;
-    }
+    } */
     .left_menu a:hover {
       color: #f1f1f1;
     }
@@ -99,7 +121,7 @@ $time=date("Y-m-d");
     height: 200px;
     display: inline-block;
   }
-  .inputHealth, .sikdan{
+  .inputHealth, .sikdan, .weight{
     text-align: center;
     width: 100%;
     display: inline-block;
@@ -131,8 +153,8 @@ $time=date("Y-m-d");
       <a href="./mypageRank.php">팀 내의 경쟁순위</a>
       <a href="./shorttable.php">게시판</a>
 
-
       <a href="./logout.php" style="float : right">logout</a>
+      <a href="./myinfo.php" style="float : right">개인 설정</a>
       <a href="./gamdok.php" style="float : right">감독 메뉴</a>
     </div>
 
@@ -188,8 +210,14 @@ $time=date("Y-m-d");
 
   <div class="sikdan">
     <form name="inputsikdan" method="post" action="healthcare_sikdan.php">
-      <h3>오늘 먹을 목표음식을 입력하세요</h3>
-
+      <h3>식단 checklist 입니다.</h3>
+      <div class="director">
+        <input type="radio" id="r1" name="date" value="<?=$time?>" />
+        <label for="r1"><span></span>오늘날짜로 기록할래요.</label>
+        <p>
+          <input type="radio" id="r2" name="date" value="<?=$tommorrow?>" />
+          <label for="r2"><span></span>내일 날짜로 기록할게요. </label>
+      </div>
     <input type="text" name="sikdan" placeholder="음식 이름">
     <input type="text" name="calorie" placeholder="칼로리">
       <div class="input_button">
@@ -199,7 +227,25 @@ $time=date("Y-m-d");
     </form>
   </div>
 
-
+  <div class="weight">
+    <form name="inputweight" method="post" action="healthcare_weight.php">
+      <h3>웨이트 트레이닝 checklisk 입니다.</h3>
+      <div class="director">
+        <input type="radio" id="w1" name="date1" value="<?=$time?>" />
+        <label for="w1"><span></span>오늘날짜로 기록할래요.</label>
+        <p>
+          <input type="radio" id="w2" name="date1" value="<?=$tommorrow?>" />
+          <label for="w2"><span></span>내일 날짜로 기록할게요. </label>
+      </div>
+    <input type="text" name="part" placeholder="운동부위">
+    <input type="text" name="name" placeholder="운동이름">
+    <input type="text" name="time" placeholder="횟수">
+      <div class="input_button">
+        <input type="submit" name="Join-button">
+        <input type="reset" name="reset-button">
+      </div>
+    </form>
+  </div>
 
     </div>
 

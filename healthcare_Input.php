@@ -16,10 +16,11 @@
  $walk=$_POST['walk'];
  $sleep=$_POST['sleep'];
  $teaminfo = $_SESSION['login_session']['teamName'];
+ $memberid = $_SESSION['login_session']['memberId'];
  $name = $_SESSION['login_session']['name'];
  $time = date("Y-m-d");
- $sql = "insert into healthinfo (name,walk,water,sleep,time)";
- $sql = $sql. "values('$name','$walk','$water','$sleep','$time')";
+ $sql = "insert into healthinfo (name,walk,water,sleep,time,memberId)";
+ $sql = $sql. "values('$name','$walk','$water','$sleep','$time','$memberid')";
  if(! $sql )
 {
   die('Could not update data: ' . mysqli_error());
