@@ -1,17 +1,7 @@
 <?php
   session_start();
+  include("./php/mysql_connect.php");
 
-  header("Content-Type:text/html;charset=utf-8");
-
- $host = '127.0.0.1';
- $user = 'root';
- $pw = 'chanki';
- $dbName = 'healthcare';
- $port = 3306;
- $mysqli = new mysqli($host, $user, $pw, $dbName,$port);
- if($mysqli === false){
-    die("ERROR: Could not connect. " . mysqli_connect_error());
-}
 $name = $_POST['name']
  $walk=$_POST['walk'];
  $teamname = $_SESSION['login_session']['teamName'];

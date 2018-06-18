@@ -20,6 +20,14 @@ header("Content-Type:text/html;charset=utf-8");
  $sql_director = "select * from userinfo WHERE teamname LIKE '{$teamName}'";
  $res_director = $mysqli ->query($sql_director);
 
+ $sql_id = "select * from userinfo WHERE email LIKE '{$email}'";
+ $res_id = $mysqli ->query($sql_id);
+
+ if($res_id->num_rows){
+   echo "<script> alert('이미 존재하는 아이디입니다.'); location.href='/joinpage.php'; </script>";
+   return;
+ }
+
 
  $sql = "insert into userInfo (email, password ,name, teamname,director,auth)";
 

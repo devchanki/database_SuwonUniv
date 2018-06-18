@@ -27,7 +27,8 @@ $sql_rank = "SELECT ANY_VALUE(name), sum(walk),ANY_VALUE(memberId)
                 SELECT name
                 FROM userinfo
                 WHERE teamname
-                like '{$_SESSION['login_session']['teamName']}'
+                like '{$_SESSION['login_session']['teamName']}' AND
+                auth like 'true'
               )
               AND time like '{$time}'
               GROUP BY memberId
@@ -41,7 +42,8 @@ $sql_rank_month =" SELECT ANY_VALUE(name), sum(walk),ANY_VALUE(memberId)
                 SELECT name
                 FROM userinfo
                 WHERE teamname
-                like '{$_SESSION['login_session']['teamName']}'
+                like '{$_SESSION['login_session']['teamName']}' AND
+                auth like 'true'
               )
               AND time like '{$time_month}%'
               GROUP BY memberId

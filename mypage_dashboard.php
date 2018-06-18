@@ -32,6 +32,21 @@ $res_sikdan = $dbconnection ->query($sql_sikdan);
 
 $sql_weight = " SELECT bodypart, name, times , num FROM weight WHERE time like '{$time}' and memberId like '{$_SESSION['login_session']['memberId']}' ";
 $res_weight = $dbconnection ->query($sql_weight);
+
+$sql_goal = "SELECT sum(dailygoal) FROM teaminfo where time like '{$time}' and teamname like '{$_SESSION['login_session']['teamName']}'";
+$res_goal = $dbconnection->query($sql_goal);
+$goal = mysqli_fetch_row($res_goal);
+
+$sql_mon_goal = "SELECT sum(monthlygoal)
+                  FROM teaminfo where time like '{$monthly}%'
+                  and teamname like '{$_SESSION['login_session']['teamName']}'";
+$res_mon_goal = $dbconnection->query($sql_mon_goal);
+$mon_goal = mysqli_fetch_row($res_mon_goal);
+
+$sql_date = "SELECT time FROM healthinfo WHERE time like '{$monthly}%' and memberId like '{$_SESSION['login_session']['memberId']}' group by time";
+$res_date = $dbconnection->query($sql_date);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -99,7 +114,7 @@ $res_weight = $dbconnection ->query($sql_weight);
       border-radius: .4rem;
       display: block;
     }
-    .dashboard , .sikdan,.weight, .dashboard_mon{
+    .dashboard , .sikdan,.weight, .dashboard_mon, .goal, .date-name{
       text-align: center;
       width : 100%;
       display: inline-block;
@@ -157,7 +172,11 @@ $res_weight = $dbconnection ->query($sql_weight);
       border-bottom: 1px solid #ccc;
       color: white;
       background-color: #454545;
-      width: 70px;
+      width: 100px;
+  }
+  a{
+    text-decoration: none;
+    color: white;
   }
   </style>
 
@@ -231,6 +250,26 @@ $res_weight = $dbconnection ->query($sql_weight);
         </div>
     </div>
 
+    <div class="goal">
+      <h4>감독이 준 목표치에요. </h4>
+      <h4>일간 목표치:<?=$goal[0]?></h4>
+      <h4>월간 목표치:<?=$mon_goal[0]?></h4><br>
+
+      <h4>달성도</h4>
+      <?php
+      if($goal[0]==0){
+        echo "일간달성도: 목표값이 없어 나눌수 없어요~"; echo "<br>";
+      }else{
+      echo "일간 달성도:"; echo $row[0] / $goal[0] * 100; echo "%"; echo "<br>";
+    }
+      if($mon_goal[0]==0)
+      {echo "월간 달성도 :목표값이 없어 나눌수 없어요~";echo "<br>";
+      }else{
+      echo "월간 달성도:"; echo $mrow[0] / $mon_goal[0] * 100; echo "%";echo "<br>";
+    }
+      ?>
+
+    </div>
 
       <div class="sikdan">
         <h4>식단 checklist 입니다.</h4>
@@ -265,8 +304,15 @@ $res_weight = $dbconnection ->query($sql_weight);
           ?>
 
       </div>
-
-
-
+      <div class="date-name">
+        <h4>이번달 내가 운동한 날짜에요</h4>
+        <?php    while($date_array = mysqli_fetch_row($res_date)) {
+          echo "<table>";
+          echo "<tr>";
+          echo "<th>날짜</th> <td> {$date_array[0]} </td>";
+          echo "</tr>";
+          echo "</table>";
+        } ?>
+      </div>
   </body>
 </html>

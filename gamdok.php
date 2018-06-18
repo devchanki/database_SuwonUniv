@@ -12,14 +12,49 @@ if( $_SESSION['login_session']['director'] =='false'){
   $dbconnection = new mysqli($host, $user, $pw, $dbname);
   $dbconnection->set_charset("utf8");
   $time=date("Y-m-d");
+  $monthly=date("Y-m");
 
-  $sql_auth_name = "SELECT name FROM userinfo WHERE teamname like '{$_SESSION['login_session']['teamName']}' and auth like 'true' ";
+
+  $sql_auth_name = "SELECT name,memberId FROM userinfo WHERE teamname like '{$_SESSION['login_session']['teamName']}' and auth like 'true' ";
   $res_name = $dbconnection ->query($sql_auth_name);
 
   $sql_unauth_name = "SELECT name,memberId FROM userinfo WHERE teamname like '{$_SESSION['login_session']['teamName']}' and auth like 'false' ";
   $res_unauth_name = $dbconnection ->query($sql_unauth_name);
 
+  $sql_goal = "SELECT sum(dailygoal) FROM teaminfo where time like '{$time}' and teamname like '{$_SESSION['login_session']['teamName']}'";
+  $res_goal = $dbconnection->query($sql_goal);
+  $goal = mysqli_fetch_row($res_goal);
 
+  $sql_mon_goal = "SELECT sum(monthlygoal) FROM teaminfo where time like '{$monthly}%' and teamname like '{$_SESSION['login_session']['teamName']}'";
+  $res_mon_goal = $dbconnection->query($sql_mon_goal);
+  $mon_goal = mysqli_fetch_row($res_mon_goal);
+
+
+
+
+  $sql_goal_list = "SELECT ANY_VALUE(name), sum(walk),ANY_VALUE(memberId)
+                FROM healthinfo WHERE name in
+                (
+                  SELECT name
+                  FROM userinfo
+                  WHERE teamname
+                  like '{$_SESSION['login_session']['teamName']}'
+                )
+                AND time like '{$time}'
+                GROUP BY memberId";
+
+                $sql_mon_list = "SELECT ANY_VALUE(name), sum(walk),ANY_VALUE(memberId)
+                              FROM healthinfo WHERE name in
+                              (
+                                SELECT name
+                                FROM userinfo
+                                WHERE teamname
+                                like '{$_SESSION['login_session']['teamName']}'
+                              )
+                              AND time like '{$monthly}%'
+                              GROUP BY memberId";
+$daily_goal = $dbconnection->query($sql_goal_list);
+$monthly_goal = $dbconnection->query($sql_mon_list);
 ?>
 
 
@@ -29,7 +64,7 @@ if( $_SESSION['login_session']['director'] =='false'){
     <meta charset="utf-8">
     <title>감독 페이지</title>
     <style>
-    .team-member , .daily , .unauth{
+    .team-member , .daily , .unauth,.goal,.list{
       text-align: center;
       width: 100%;
       display: inline-block;
@@ -129,6 +164,31 @@ if( $_SESSION['login_session']['director'] =='false'){
       text-decoration: none;
       color: red;
     }
+    .input_button{
+      display: inline;
+    }
+    input[type="radio"] {
+    display:none;
+    }
+
+    input[type="radio"] + label {
+        color:black;
+        font-family:Arial, sans-serif;
+    }
+
+    input[type="radio"] + label span {
+        display:inline-block;
+        width:19px;
+        height:19px;
+        margin:-2px 10px 0 0;
+        vertical-align:middle;
+        background:url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/check_radio_sheet.png) -38px top no-repeat;
+        cursor:pointer;
+      }
+
+  input[type="radio"]:checked + label span {
+    background:url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/check_radio_sheet.png) -57px top no-repeat;
+  }
     </style>
   </head>
   <body>
@@ -136,7 +196,7 @@ if( $_SESSION['login_session']['director'] =='false'){
       <a href="./mypage_dashboard.php">Dashboard</a>
       <a href="./mypage.php">건강정보 입력</a>
       <a href="./mypageRank.php">팀 내의 경쟁순위</a>
-      <a href="#게시판">게시판</a>
+      <a href="./shorttable.php">게시판</a>
 
 
       <a href="./logout.php" style="float : right">logout</a>
@@ -164,7 +224,7 @@ if( $_SESSION['login_session']['director'] =='false'){
         echo "<table>";
         echo "<tr>";
         echo "<th>이름: </th> <td> {$row[0]} </td>";
-
+        echo "<th>이름구별용 번호 </th> <td> {$row[1]} </td>";
         echo "</tr>";
         echo "</table>";
       }
@@ -188,14 +248,21 @@ if( $_SESSION['login_session']['director'] =='false'){
       <div class="daily">
 
 
-            <form name="inputHealth" method="post" action="goal.php">
+            <form name="inputGoal" method="post" action="inputGoal.php">
               <h3> <?=$time?> 날짜로 입력하신 내용이 기록됩니다. </h3>
               <h3> 목표치를 입력해주세요.</h3>
               <div class="card">
                 <img src="walk.png" alt="walk" style="width:100%">
                 <div class="container">
-                <h4><b>정하고 싶은 목표치를 입력해주세요</b></h4>
-                <input type="text" name="walk" placeholder="목표량을 입력해주세요">
+                <h4><b>정하고 싶은 목표치를 입력해주세요. 목표치를 기간내에 더 주면 더해집니다.</b></h4>
+                <input type="text" name="daily" placeholder="목표량을 입력해주세요">
+              </div>
+              <div class="time-sel">
+                <input type="radio" id="r1" name="time" checked="checked" value="true" />
+                <label for="r1"><span></span>일간으로 목표를 줄래요.</label>
+                <p>
+                  <input type="radio" id="r2" name="time" value="false" />
+                  <label for="r2"><span></span>한달 목표로 줄래요. </label>
               </div>
             </div>
 
@@ -205,6 +272,54 @@ if( $_SESSION['login_session']['director'] =='false'){
             </div>
           </form>
 
+    </div>
+    <div class="goal">
+      <h4>내가 준 일간 목표 : <?=$goal[0]?></h4>
+      <h4>내가 준 월간 목표 :<?=$mon_goal[0]?> </h4>
+
+    </div>
+
+    <div class="list">
+      <h3>운동을 수행한 사람들의 일간 달성률을 보여줍니다. 운동을 하지 않은사람은 아얘 제외됩니다!</h3>
+      <?php
+        while($row = mysqli_fetch_row($daily_goal)) {
+          echo "<table>";
+          echo "<tr>";
+          echo "<th>이름 </th> <td> {$row[0]} </td>";
+          echo "<th>달린 거리 </th> <td> {$row[1]} </td>";
+          echo "<th>이름구별용 번호 </th> <td> {$row[2]} </td>";
+          if($goal[0] == 0 ){echo "<th>달성률: </th> <td> ";echo "일간목표를 주지 않았습니다.</td>";}
+          else{echo "<th>달성률: </th> <td> ";echo $row[1]/$goal[0]* 100; echo "% </td>";}
+
+          echo "</tr>";
+          echo "</table>";
+        }
+        ?>
+</div>
+        <div class="list">
+          <h3>운동을 수행한 사람들의 월간 달성률을 보여줍니다. 운동을 하지 않은사람은 아얘 제외됩니다!</h3>
+          <?php
+            while($row = mysqli_fetch_row($monthly_goal)) {
+              echo "<table>";
+              echo "<tr>";
+              echo "<th>이름 </th> <td> {$row[0]} </td>";
+              echo "<th>달린거리 </th> <td> {$row[1]} </td>";
+              echo "<th>이름구별용 번호 </th> <td> {$row[2]} </td>";
+              if($mon_goal[0] == 0 ){echo "<th>달성률: </th> <td> ";echo "월간목표를 주지 않았습니다.</td>";}
+              else{echo "<th>달성률: </th> <td> ";echo $row[1]/$mon_goal[0]* 100; echo "% </td>";}
+
+              echo "</tr>";
+              echo "</table>";
+              $sql_date = "SELECT time FROM healthinfo WHERE time like '{$monthly}%' and memberId like '{$row[2]}' group by time";
+
+              $res_date = $dbconnection->query($sql_date);
+              echo "운동한 날짜 : ";
+              while($row_date = mysqli_fetch_row($res_date)){
+                echo $row_date[0];
+                echo ",";
+              }
+            }
+            ?>
     </div>
   </body>
 </html>

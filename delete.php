@@ -8,6 +8,7 @@
  $pw = 'chanki';
  $dbName = 'healthcare';
  $port = 3306;
+
  $mysqli = new mysqli($host, $user, $pw, $dbName,$port);
  if($mysqli === false){
     die("ERROR: Could not connect. " . mysqli_connect_error());
@@ -16,12 +17,14 @@
  $sql[0] = "DELETE FROM userinfo WHERE memberId like '{$name}'";
  $sql[1] = "DELETE FROM healthinfo WHERE memberId like '{$name}'";
  $sql[2] = "DELETE FROM shorttable WHERE memberId like '{$name}'";
+ $sql[3] = "DELETE FROM weight WHERE memberId like '{$name}'";
+ $sql[4] = "DELETE FROM sikdan WHERE memberId like '{$name}'";
 
-  for($i=0 ; $i<3; $i++){
+  for($i=0 ; $i<5; $i++){
   $mysqli->query($sql[$i]);
   }
 
-  echo("<script>location.replace('./index.html');</script>");
+  echo("<script>location.replace('./logout.php');</script>");
 
 
 ?>

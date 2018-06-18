@@ -1,6 +1,23 @@
 <?php
 session_start();
+if(!isset($_SESSION['login_session'])){
+  header("Location:./index.html");
+}
 
+if(!isset($_SESSION['login_session'])){
+  header("Location:./index.html");
+}
+header("Content-Type:text/html;charset=utf-8");
+
+ $host = '127.0.0.1';
+ $user = 'root';
+ $pw = 'chanki';
+ $dbName = 'healthcare';
+ $port = 3306;
+ $mysqli = new mysqli($host, $user, $pw, $dbName,$port);
+ if($mysqli == false){
+    die("ERROR: Could not connect. " . mysqli_connect_error());
+}
 $time=date("Y-m-d");
 $tommorrow =date("Ymd", strtotime("+1 day"));
 ?>
@@ -212,7 +229,7 @@ $tommorrow =date("Ymd", strtotime("+1 day"));
     <form name="inputsikdan" method="post" action="healthcare_sikdan.php">
       <h3>식단 checklist 입니다.</h3>
       <div class="director">
-        <input type="radio" id="r1" name="date" value="<?=$time?>" />
+        <input type="radio" id="r1" name="date" checked="checked" value="<?=$time?>" />
         <label for="r1"><span></span>오늘날짜로 기록할래요.</label>
         <p>
           <input type="radio" id="r2" name="date" value="<?=$tommorrow?>" />
@@ -231,7 +248,7 @@ $tommorrow =date("Ymd", strtotime("+1 day"));
     <form name="inputweight" method="post" action="healthcare_weight.php">
       <h3>웨이트 트레이닝 checklisk 입니다.</h3>
       <div class="director">
-        <input type="radio" id="w1" name="date1" value="<?=$time?>" />
+        <input type="radio" id="w1" name="date1" checked="checked" value="<?=$time?>" />
         <label for="w1"><span></span>오늘날짜로 기록할래요.</label>
         <p>
           <input type="radio" id="w2" name="date1" value="<?=$tommorrow?>" />

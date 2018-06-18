@@ -2,9 +2,6 @@
 <?php
 
   session_start();
-
-
-
   $host = 'localhost';
   $user = 'root';
   $pw = 'chanki';
@@ -137,7 +134,7 @@
           <input type="radio" id="r1" name="director" value="true" />
           <label for="r1"><span></span>감독입니다.</label>
           <p>
-            <input type="radio" id="r2" name="director" value="false" />
+            <input type="radio" id="r2" name="director" checked="checked" value="false" />
             <label for="r2"><span></span>일반 사용자입니다. </label>
         </div>
         <div class="join_button">

@@ -1,5 +1,12 @@
 <?php
 session_start();
+if(!isset($_SESSION['login_session'])){
+  header("Location:./index.html");
+}
+
+if(!isset($_SESSION['login_session'])){
+  header("Location:./index.html");
+}
 $host = 'localhost';
 $user = 'root';
 $pw = 'chanki';
@@ -145,7 +152,7 @@ $res_all_query = $dbconnection ->query($all_table_query);
         <h4>한줄게시판 입니다.</h4>
           <input type="radio" id="r1" name="open" value="true" />
           <label for="r1"><span></span>전체한테 글을 날립니다.</label>
-          <input type="radio" id="r2" name="open" value="false" />
+          <input type="radio" id="r2" name="open" checked="checked" value="false" />
           <label for="r2"><span></span>팀원한테만 글을 보여줍니다. </label>
         <input style="display: block; width: 100%; height: 50px;"type="text" name="table" placeholder="자신의 생각을 공유해보세요">
 

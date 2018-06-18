@@ -154,7 +154,7 @@ session_start();
       </div>
     </div>
 
-  <form action="change_team.php" method="post">
+  <form action="changeteam.php" method="post">
     <div class="change-team">
       <input type="text" name="team" placeholder="바꾸고 싶은 팀 이름을 입력하세요">
 

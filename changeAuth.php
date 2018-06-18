@@ -14,7 +14,7 @@ header("Content-Type:text/html;charset=utf-8");
 
  $mysqli->set_charset("utf8");
 
- $sql_auth = "UPDATE userinfo SET auth='true' WHERE memberid={$id};";
+ $sql_auth = "UPDATE userinfo SET auth='true' WHERE memberid={$id}";
 
 
 
